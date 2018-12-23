@@ -1,3 +1,8 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'].'/classes/db.php';
+$db = db::getInstance();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +12,7 @@
 </head>
 <body>
 
-    <?php include_once 'header.html' ?>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'].'/header.php' ?>
 
     <section class="item-page">
         <div class="product-img">
@@ -26,7 +31,7 @@
 
     </section>
 
-    <?php include_once 'footer.html' ?>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'].'footer.html' ?>
 
 </body>
 </html>
