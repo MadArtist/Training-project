@@ -1,19 +1,10 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/db.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/Db.php';
 $db = db::getInstance();
 $db = $db->getConnection();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Bag1</title>
-    <link href="/css/style.css" rel="stylesheet">
-</head>
-<body>
-
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/header.php' ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/header.php' ?>
 
     <section class="item-page">
         <!-- Query product data from db -->

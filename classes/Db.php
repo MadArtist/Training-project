@@ -1,6 +1,6 @@
 <?php
 
-class db
+class Db
 {
     private $connection;
     private $host = "127.0.0.1";
