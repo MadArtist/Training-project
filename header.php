@@ -8,10 +8,10 @@
             <a href="#"><img src="/img/shopping-cart-header.png" class="head-icon"></a>
         </div>
         <ul class="main-menu">
-            <li>MenuItem1</li>
-            <li>MenuItem2</li>
-            <li>MenuItem3</li>
-            <li>MenuItem4</li>
+            <?php
+
+
+            ?>
         </ul>
         <div class="breadcrumbs">
             <p>Page name</p>
