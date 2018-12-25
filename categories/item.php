@@ -1,70 +1,66 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/Db.php';
-$db = db::getInstance();
-$db = $db->getConnection();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/Product.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/Configurable.php';
+$db = db::getInstance()->getConnection();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Bag1</title>
-    <link href="/css/style.css" rel="stylesheet">
-</head>
-<body>
-
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/header.php' ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/header.php' ?>
 
     <section class="item-page">
+
         <!-- Query product data from db -->
         <?php
-
-        if( !empty($_GET['color']) ) {
-            if($_GET['color'] == 'yellow') {
-                $query = "SELECT * FROM training.products WHERE prd_name = 'Bag1-yellow'";
-            } else if($_GET['color'] == 'red') {
-                $query = "SELECT * FROM training.products WHERE prd_name = 'Bag1-red'";
-            } else if($_GET['color'] == 'brown') {
-                $query = "SELECT * FROM training.products WHERE prd_name = 'Bag1-brown'";
-            } else if($_GET['color'] == 'green') {
-                $query = "SELECT * FROM training.products WHERE prd_name = 'Bag1-green'";
-            }
-        } else {
-            $query = "SELECT * FROM training.products WHERE prd_name = 'Bag1'";
-        }
-        $res = $db->query($query);
-        $data = $res->fetch_all(MYSQLI_ASSOC);
-
+        if(empty($_GET['color']))
+            $prod = new Product($_GET['id']);
+        else
+            $prod = new Configurable($_GET['id'], $_GET['color'], $_GET['size']);
+        $prod->setData();
         ?>
         <div class="product-img">
-            <img src="<?= $data[0]['prd_img'] ?>" class="item-page-img">
+            <img src="<?= $prod->getImg() ?>" class="item-page-img">
         </div>
         <div class="item-info">
-            <h2><?= $data[0]['prd_name'] ?></h2>
-            <b class="price">$<?= $data[0]['prd_price'] ?></b>
+            <h2><?php echo $prod->getName(); if ($prod instanceof Configurable) echo ' ' . $_GET['color'] . ', ' . $_GET['size'] ?></h2>
+            <b class="price">$<?= $prod->getPrice() ?></b>
             <div class="config">
                 <!-- Config -->
-                <?php
+                <?php if ($prod instanceof Configurable):?>
+                    <form method="get">
+                    <input type="hidden" name="id" value="<?= $_GET['id']?>">
+                    <label for="color">Color: </label>
+                    <select name="color" id="color">
+                        <?php
+                        foreach ($data = $prod->getConfColor() as $val) {
+                                echo "<option value='{$val['color']}'";
+                                if($_GET['color'] == $val['color'])
+                                    echo ' selected="selected"';
+                                echo ">{$val['color']}</option>";
+                            }
 
-                if($data[0]['prd_conf_of']) {
-                    $res = $db->query("SELECT * FROM training.products WHERE prd_conf_of = '"
-                        . $data[0]['prd_conf_of'] . "'");
+                        ?>
 
-                    $data = $res->fetch_all(MYSQLI_ASSOC);
-                    foreach ($data as $val) {
-                        echo "<a href='{$val['prd_link']}'><div class='color {$val['prd_color']}'></div></a>";
-                    }
-                }
-                ?>
+                    </select>
+                    <label for="size">Size: </label>
+                    <select name="size" id="size">
+                        <?php
+                            foreach ($data = $prod->getConfSize() as $val) {
+                                echo "<option value='{$val['size']}'";
+                                if($_GET['size'] == $val['size'])
+                                    echo ' selected="selected"';
+                                echo ">{$val['size']}</option>";
+                            }
+                        ?>
+                    </select>
+                    <button type="submit">Ok</button>
+                </form>
+                <?php endif; ?>
             </div>
-            <p><?= $data[0]['prd_description'] ?></p>
-            <a href="/new-order.php?buy=<?=$data[0]['prd_id']?>" class="btn">Buy</a>
+            <p><?= $prod->getDescr() ?></p>
+            <a href="/new-order.php?buy=<?=$_GET['id']?>" class="btn">Buy</a>
         </div>
         <div class="clearfix"></div>
 
     </section>
 
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/footer.html' ?>
-
-</body>
-</html>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/footer.html' ?>

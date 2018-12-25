@@ -1,0 +1,27 @@
+.login {
+    margin-top: 300px;
+}
+
+.login form {
+    width: 200px;
+    margin: auto;
+}
+
+.admin {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.orders {
+
+    border-collapse: collapse;
+}
+
+th {
+    padding: 10px;
+}
+
+td {
+    border: 1px solid black;
+    padding: 5px;
+}

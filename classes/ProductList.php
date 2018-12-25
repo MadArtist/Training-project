@@ -6,14 +6,14 @@
  * Time: 17:32
  */
 
-class Product
+class ProductList
 {
 
     public static function getData($category, $page = 1, $perPage = 3, $sort = 'name_asc')
     {
         $offset = ($page - 1) * $perPage;
 
-        $query = "SELECT * FROM training.products WHERE ISNULL(prd_conf_of) AND cat_id = " . $category . " ";
+        $query = "SELECT * FROM training.products WHERE cat_id = " . $category . " ";
         if ($sort === 'name_asc') {
             $query .= "ORDER BY prd_name ASC";
         } else if ($sort === 'name_desc') {
